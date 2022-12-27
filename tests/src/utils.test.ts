@@ -1,4 +1,4 @@
-import { formatItemForCsvOrTsv, dataToString } from "../utils";
+import { formatItemForCsvOrTsv, dataToString } from "../../src/utils";
 
 describe("formatItemForCsvOrTsv", () => {
   it("should wrap in double quotes", () => {

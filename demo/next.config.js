@@ -4,7 +4,7 @@
  * @type {import('next').NextConfig}
  **/
 const nextConfig = {
-  basePath: '/export-data',
-}
+  basePath: "/export-data",
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

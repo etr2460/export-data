@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import FileDownloadLink from "../FileDownloadLink";
+import FileDownloadLink from "../../../src/components/FileDownloadLink";
 
 describe("FileDownloadLink", () => {
   it("renders", () => {
