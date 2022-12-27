@@ -1,2 +1,3 @@
 # export-data
-TS/JS for exporting data in a variety of formats
+
+Export data in React to CSV and other file formats
