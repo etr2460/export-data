@@ -3,10 +3,10 @@ import { FileDownloadLink, FileType } from "export-data";
 
 export default function Home() {
   const [fileType, setFileType] = useState<FileType>("CSV");
-  const [columnNames, setColumnNames] = useState<string>("['Name', 'Age']");
+  const [columnNames, setColumnNames] = useState<string>('["Name", "Age"]');
   const [rows, setRows] = useState<string>(`[
-    ['John', 20],
-    ['Mary', 24],
+    ["John", 20],
+    ["Mary", 24]
   ]`);
   const [filename, setFilename] = useState<string>("data");
 
@@ -31,7 +31,6 @@ export default function Home() {
       <label htmlFor="fileType">File type</label>
       <select
         id="fileType"
-        defaultValue="CSV"
         value={fileType}
         onChange={(e) => setFileType(e.target.value as FileType)}
       >

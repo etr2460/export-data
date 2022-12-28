@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { flushSync } from "react-dom";
 import { FileType } from "../types";
 import { createDownloadUrl, dataToString } from "../utils";
 
@@ -29,20 +28,28 @@ const FileDownloadLink = ({
   const downloadLink = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    const data = dataToString(columnNames, rows, fileType);
-
-    if (downloadOnDataChange) {
-      flushSync(() =>
-        setDownloadUrl(createDownloadUrl(data, fileType, encoding))
-      );
-      setDownloadOnDataChange(false);
-      downloadLink.current?.click();
-    } else {
-      setDownloadUrl(createDownloadUrl(data, fileType, encoding));
-    }
+    setDownloadUrl(
+      createDownloadUrl(
+        dataToString(columnNames, rows, fileType),
+        fileType,
+        encoding
+      )
+    );
   }, [columnNames, rows, fileType, encoding]);
 
+  useEffect(() => {
+    if (downloadOnDataChange) {
+      downloadLink.current?.click();
+      setDownloadOnDataChange(false);
+    }
+  }, [downloadUrl]);
+
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    /* The data url is already set, so this click is only to trigger the download */
+    if (downloadOnDataChange) {
+      return;
+    }
+
     if (onClick) {
       onClick(e);
     }
