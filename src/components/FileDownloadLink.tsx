@@ -61,13 +61,13 @@ const FileDownloadLink = ({
       return;
     }
 
-    if (onClick) {
-      await onClick(e);
-    }
-
     if (setsDataAsyncInOnClick) {
       e.preventDefault();
       setDownloadOnDataChange(true);
+    }
+    
+    if (onClick) {
+      await onClick(e);
     }
   };
 
