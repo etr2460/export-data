@@ -55,14 +55,14 @@ const FileDownloadLink = ({
     }
   }, [downloadUrl]);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     /* The data url is already set, so this click is only to trigger the download */
     if (downloadOnDataChange) {
       return;
     }
 
     if (onClick) {
-      onClick(e);
+      await onClick(e);
     }
 
     if (setsDataAsyncInOnClick) {
