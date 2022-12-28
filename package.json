@@ -4,26 +4,13 @@
   "description": "Export data in React to CSV and other file formats",
   "types": "./lib/cjs/types/index.d.ts",
   "main": "./lib/cjs/index.js",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./lib/esm/types/index.d.ts",
-        "default": "./lib/esm/index.mjs"
-      },
-      "require": {
-        "types": "./lib/cjs/types/index.d.ts",
-        "default": "./lib/cjs/index.js"
-      }
-    }
-  },
   "files": [
     "lib/**/*"
   ],
   "scripts": {
     "test": "jest --config ./configs/jest.config.js",
     "clean": "rm -rf ./lib",
-    "build": "npm run clean && npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc -p ./configs/tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
+    "build": "npm run clean && npm run build:cjs",
     "build:cjs": "tsc -p ./configs/tsconfig.cjs.json",
     "prepack": "npm run build",
     "format": "prettier --write ."
