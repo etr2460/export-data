@@ -3,13 +3,24 @@ import { FileType } from "../types";
 import { createDownloadUrl, dataToString } from "../utils";
 
 export type FileDownloadLinkProps = {
+  /** The type of file to be exported. */
   fileType: FileType;
+  /** The text encoding of the data, utf-8 by default. */
   encoding?: string;
+  /** The column names of the data. */
   columnNames: (string | number)[];
+  /** The rows of the data. */
   rows: (string | number)[][];
+  /** The filename for the exported file. */
   filename?: string;
+  /** A function to be called when the link is clicked before the data is downloaded.
+   *  If this function modifies the data to be downloaded, then you must set
+   *  setsDataAsyncInOnClick to true.
+   */
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  /** If the data is set asynchronously in onClick, then this must be set to true. */
   setsDataAsyncInOnClick?: boolean;
+  /** The content for rendering the link. */
   children: React.ReactNode;
 };
 
