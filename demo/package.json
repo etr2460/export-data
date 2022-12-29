@@ -6,7 +6,7 @@
     "deploy": "npm run build && touch out/.nojekyll && git add out/ && git commit -m \"Deploy\" && cd .. && git push origin `git subtree split --prefix demo/out gh-pages`:gh-pages --force"
   },
   "dependencies": {
-    "export-data": "^0.1.0",
+    "export-data": "^0.1.6",
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

@@ -63,8 +63,7 @@ export default function Home() {
           <br />
           <FileDownloadLink
             setsDataAsyncInOnClick
-            columnNames={parsedData.columnNames}
-            rows={parsedData.rows}
+            data={parsedData}
             filename={filename}
             fileType={fileType}
             onClick={() => {
@@ -81,13 +80,15 @@ export default function Home() {
           <h2>Download static data</h2>
           <FileDownloadLink
             fileType="CSV"
-            columnNames={["Fruit", "Price"]}
             filename="fruits"
-            rows={[
-              ["Apple", 1],
-              ["Watermelon", 5],
-              ["Durian", 10],
-            ]}
+            data={{
+              columnNames: ["Fruit", "Price"],
+              rows: [
+                ["Apple", 1],
+                ["Watermelon", 5],
+                ["Durian", 10],
+              ],
+            }}
           >
             Download static data
           </FileDownloadLink>
