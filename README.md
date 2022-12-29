@@ -13,13 +13,15 @@ Export data in React to CSV and other file formats
 ```typescript
 <FileDownloadLink
   fileType="CSV"
-  columnNames={["Fruit", "Price"]}
   filename="fruits"
-  rows={[
-    ["Apple", 1],
-    ["Watermelon", 5],
-    ["Durian", 10],
-  ]}
+  data={{
+    columnNames: ["Fruit", "Price"],
+    rows: [
+      ["Apple", 1],
+      ["Watermelon", 5],
+      ["Durian", 10],
+    ],
+  }}
 >
   Download data
 </FileDownloadLink>
@@ -33,18 +35,22 @@ export type FileDownloadLinkProps = {
   fileType: FileType;
   /** The text encoding of the data, utf-8 by default. */
   encoding?: string;
-  /** The column names of the data. */
-  columnNames: (string | number)[];
-  /** The rows of the data. */
-  rows: (string | number)[][];
+  /** The data to download. Can be null if the data is set in onClick. */
+  data: {
+    columnNames: (string | number)[];
+    rows: (string | number)[][];
+  } | null;
   /** The filename for the exported file. */
   filename?: string;
   /** A function to be called when the link is clicked before the data is downloaded.
    *  If this function modifies the data to be downloaded, then you must set
-   *  setsDataAsyncInOnClick to true and call the `download` function when complete.
+   *  setsDataAsyncInOnClick to true.
    */
-  onClick?: (e: React.MouseEvent<HTMLAnchorElement>, download: () => void) => void;
-  /** If the data is set asynchronously in onClick, then this must be set to true. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  /** If the data is set asynchronously in onClick, then this must be set to true.
+   *  Setting this to true will result in an automatic download of data at the next time
+   *  the data changes.
+   */
   setsDataAsyncInOnClick?: boolean;
   /** The content for rendering the link. */
   children: React.ReactNode;

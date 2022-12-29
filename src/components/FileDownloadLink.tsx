@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useDeepCompareEffect } from "react-use";
 import { FileType } from "../types";
 import { createDownloadUrl, dataToString } from "../utils";
 
@@ -7,18 +8,22 @@ export type FileDownloadLinkProps = {
   fileType: FileType;
   /** The text encoding of the data, utf-8 by default. */
   encoding?: string;
-  /** The column names of the data. */
-  columnNames: (string | number)[];
-  /** The rows of the data. */
-  rows: (string | number)[][];
+  /** The data to download. Can be null if the data is set in onClick. */
+  data: {
+    columnNames: (string | number)[];
+    rows: (string | number)[][];
+  } | null;
   /** The filename for the exported file. */
   filename?: string;
   /** A function to be called when the link is clicked before the data is downloaded.
    *  If this function modifies the data to be downloaded, then you must set
-   *  setsDataAsyncInOnClick to true and call the `download` function when complete.
+   *  setsDataAsyncInOnClick to true.
    */
-  onClick?: (e: React.MouseEvent<HTMLAnchorElement>, download: () => void) => void;
-  /** If the data is set asynchronously in onClick, then this must be set to true. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  /** If the data is set asynchronously in onClick, then this must be set to true.
+   *  Setting this to true will result in an automatic download of data at the next time
+   *  the data changes.
+   */
   setsDataAsyncInOnClick?: boolean;
   /** The content for rendering the link. */
   children: React.ReactNode;
@@ -28,45 +33,47 @@ const FileDownloadLink = ({
   fileType,
   encoding = "utf-8",
   filename = "data",
-  columnNames,
-  rows,
+  data,
   onClick,
   setsDataAsyncInOnClick,
   children,
 }: FileDownloadLinkProps) => {
   const [downloadUrl, setDownloadUrl] = useState<string>();
-  const [triggerDownload, setTriggerDownload] = useState(false);
+  const [downloadOnDataChange, setDownloadOnDataChange] = useState(false);
   const downloadLink = useRef<HTMLAnchorElement>(null);
 
-  useEffect(() => {
-    setDownloadUrl(
-      createDownloadUrl(
-        dataToString(columnNames, rows, fileType),
-        fileType,
-        encoding
-      )
-    );
-  }, [columnNames, rows, fileType, encoding]);
-
-  useEffect(() => {
-    if (triggerDownload) {
-      downloadLink.current?.click();
-      setTriggerDownload(false);
+  useDeepCompareEffect(() => {
+    if (data) {
+      setDownloadUrl(
+        createDownloadUrl(
+          dataToString(data.columnNames, data.rows, fileType),
+          fileType,
+          encoding
+        )
+      );
     }
-  }, [triggerDownload]);
+  }, [data, fileType, encoding]);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  useEffect(() => {
+    if (downloadOnDataChange) {
+      downloadLink.current?.click();
+      setDownloadOnDataChange(false);
+    }
+  }, [downloadUrl]);
+
+  const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     /* The data url is already set, so this click is only to trigger the download */
-    if (triggerDownload) {
+    if (downloadOnDataChange) {
       return;
     }
 
     if (setsDataAsyncInOnClick) {
       e.preventDefault();
+      setDownloadOnDataChange(true);
     }
 
     if (onClick) {
-      onClick(e, () => setTriggerDownload(true));
+      await onClick(e);
     }
   };
 

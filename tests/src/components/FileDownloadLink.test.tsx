@@ -8,11 +8,13 @@ describe("FileDownloadLink", () => {
   it("renders", () => {
     render(
       <FileDownloadLink
-        columnNames={["foo", "bar"]}
-        rows={[
-          ["a", "b"],
-          ["c", "d"],
-        ]}
+        data={{
+          columnNames: ["foo", "bar"],
+          rows: [
+            ["a", "b"],
+            ["c", "d"],
+          ],
+        }}
         fileType="CSV"
         filename="myFile.csv"
       >
