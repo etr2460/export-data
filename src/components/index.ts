@@ -1,1 +1,1 @@
-export { default as FileDownloadLink } from "./FileDownloadLink";
+export * from "./FileDownloadLink";

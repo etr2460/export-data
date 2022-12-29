@@ -36,10 +36,7 @@ export type FileDownloadLinkProps = {
   /** The text encoding of the data, utf-8 by default. */
   encoding?: string;
   /** The data to download. Can be null if the data is set in onClick. */
-  data: {
-    columnNames: (string | number)[];
-    rows: (string | number)[][];
-  } | null;
+  data: FileDownloadLinkData;
   /** The filename for the exported file. */
   filename?: string;
   /** A function to be called when the link is clicked before the data is downloaded.
@@ -55,4 +52,9 @@ export type FileDownloadLinkProps = {
   /** The content for rendering the link. */
   children: React.ReactNode;
 };
+
+export type FileDownloadLinkData = {
+  columnNames: (string | number)[];
+  rows: (string | number)[][];
+} | null;
 ```

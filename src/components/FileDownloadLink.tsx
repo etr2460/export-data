@@ -2,16 +2,18 @@ import React, { useState, useEffect, useRef } from "react";
 import { FileType } from "../types";
 import { createDownloadUrl, dataToString } from "../utils";
 
+export type FileDownloadLinkData = {
+  columnNames: (string | number)[];
+  rows: (string | number)[][];
+} | null;
+
 export type FileDownloadLinkProps = {
   /** The type of file to be exported. */
   fileType: FileType;
   /** The text encoding of the data, utf-8 by default. */
   encoding?: string;
   /** The data to download. Can be null if the data is set in onClick. */
-  data: {
-    columnNames: (string | number)[];
-    rows: (string | number)[][];
-  } | null;
+  data: FileDownloadLinkData;
   /** The filename for the exported file. */
   filename?: string;
   /** A function to be called when the link is clicked before the data is downloaded.
@@ -28,7 +30,7 @@ export type FileDownloadLinkProps = {
   children: React.ReactNode;
 };
 
-const FileDownloadLink = ({
+export const FileDownloadLink = ({
   fileType,
   encoding = "utf-8",
   filename = "data",
