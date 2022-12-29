@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useDeepCompareEffect } from "react-use";
 import { FileType } from "../types";
 import { createDownloadUrl, dataToString } from "../utils";
 
@@ -42,7 +41,7 @@ const FileDownloadLink = ({
   const [downloadOnDataChange, setDownloadOnDataChange] = useState(false);
   const downloadLink = useRef<HTMLAnchorElement>(null);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     if (data) {
       setDownloadUrl(
         createDownloadUrl(
