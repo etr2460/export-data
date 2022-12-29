@@ -15,9 +15,9 @@ export type FileDownloadLinkProps = {
   filename?: string;
   /** A function to be called when the link is clicked before the data is downloaded.
    *  If this function modifies the data to be downloaded, then you must set
-   *  setsDataAsyncInOnClick to true.
+   *  setsDataAsyncInOnClick to true and call the `download` function when complete.
    */
-  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>, download: () => void) => void;
   /** If the data is set asynchronously in onClick, then this must be set to true. */
   setsDataAsyncInOnClick?: boolean;
   /** The content for rendering the link. */
@@ -35,7 +35,7 @@ const FileDownloadLink = ({
   children,
 }: FileDownloadLinkProps) => {
   const [downloadUrl, setDownloadUrl] = useState<string>();
-  const [downloadOnDataChange, setDownloadOnDataChange] = useState(false);
+  const [triggerDownload, setTriggerDownload] = useState(false);
   const downloadLink = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -49,25 +49,24 @@ const FileDownloadLink = ({
   }, [columnNames, rows, fileType, encoding]);
 
   useEffect(() => {
-    if (downloadOnDataChange) {
+    if (triggerDownload) {
       downloadLink.current?.click();
-      setDownloadOnDataChange(false);
+      setTriggerDownload(false);
     }
-  }, [downloadUrl]);
+  }, [triggerDownload]);
 
-  const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     /* The data url is already set, so this click is only to trigger the download */
-    if (downloadOnDataChange) {
+    if (triggerDownload) {
       return;
     }
 
     if (setsDataAsyncInOnClick) {
       e.preventDefault();
-      setDownloadOnDataChange(true);
     }
-    
+
     if (onClick) {
-      await onClick(e);
+      onClick(e, () => setTriggerDownload(true));
     }
   };
 

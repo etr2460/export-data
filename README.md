@@ -41,9 +41,9 @@ export type FileDownloadLinkProps = {
   filename?: string;
   /** A function to be called when the link is clicked before the data is downloaded.
    *  If this function modifies the data to be downloaded, then you must set
-   *  setsDataAsyncInOnClick to true.
+   *  setsDataAsyncInOnClick to true and call the `download` function when complete.
    */
-  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>, download: () => void) => void;
   /** If the data is set asynchronously in onClick, then this must be set to true. */
   setsDataAsyncInOnClick?: boolean;
   /** The content for rendering the link. */
